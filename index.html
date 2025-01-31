@@ -4,39 +4,71 @@
   <base href="/beastgenerator/">
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="MrBeast Storybook Generator - Create exciting children's stories featuring MrBeast's adventures">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- iOS meta tags & icons -->
+  <meta name="description" content="MrBeast Storybook Generator">
   <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="MrBeast Storybook">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
-
-  <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
-
   <title>MrBeast Storybook Generator</title>
-  <link rel="manifest" href="manifest.json">
 
-  <!-- Loading indicator styles -->
   <style>
     .loading {
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
+      background-color: #ffffff;
     }
-    .loading img {
-      width: 80px;
-      height: 80px;
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #2196F3;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
 <div class="loading">
-  <img src="loading.gif" alt="Loading..."/>
+  <div class="spinner"></div>
 </div>
-<script src="flutter_bootstrap.js" async></script>
+
+<script src="flutter.js" defer></script>
+<script>
+  window.addEventListener('load', async function() {
+    var loading = document.querySelector('.loading');
+
+    _flutter = {
+      loader: {
+        serviceWorker: {
+          serviceWorkerVersion: null
+        }
+      }
+    };
+
+    var scriptLoaderPromise = new Promise((resolve) => {
+      var scriptElement = document.createElement('script');
+      scriptElement.src = 'main.dart.js';
+      scriptElement.type = 'application/javascript';
+      document.body.append(scriptElement);
+
+      scriptElement.addEventListener('load', () => {
+        loading.style.display = 'none';
+        resolve();
+      });
+    });
+
+    await scriptLoaderPromise;
+  });
+</script>
+
 </body>
 </html>
+
+
